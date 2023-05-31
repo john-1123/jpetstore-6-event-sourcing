@@ -23,7 +23,6 @@ import javax.servlet.http.HttpSession;
 
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.integration.spring.SpringBean;
-import net.sourceforge.stripes.validation.Validate;
 
 import org.mybatis.jpetstore.core.EventStore;
 import org.mybatis.jpetstore.domain.Account;
@@ -75,7 +74,7 @@ public class AccountActionBean extends AbstractActionBean {
     return account.getUsername();
   }
 
-  @Validate(required = true, on = { "signon", "newAccount", "editAccount" })
+  // @Validate(required = true, on = { "signon", "newAccount", "editAccount" })
   public void setUsername(String username) {
     account.setUsername(username);
   }
@@ -84,9 +83,17 @@ public class AccountActionBean extends AbstractActionBean {
     return account.getPassword();
   }
 
-  @Validate(required = true, on = { "signon", "newAccount", "editAccount" })
+  // @Validate(required = true, on = { "signon", "newAccount", "editAccount" })
   public void setPassword(String password) {
     account.setPassword(password);
+  }
+
+  public String getRepeatedPassword() {
+    return account.getRepeatedPassword();
+  }
+
+  public void setRepeatedPassword(String repeatedPassword) {
+    account.setRepeatedPassword(repeatedPassword);
   }
 
   public List<Product> getMyList() {

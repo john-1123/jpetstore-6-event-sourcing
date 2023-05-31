@@ -21,8 +21,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import net.sourceforge.stripes.validation.Validate;
-
 import org.mybatis.jpetstore.core.event.AttributeUpdatedEvent;
 import org.mybatis.jpetstore.core.event.DomainEvent;
 import org.mybatis.jpetstore.core.event.EntityCreatedEvent;
@@ -39,6 +37,7 @@ public class Account implements Serializable {
   private String accountId;
   private String username;
   private String password;
+  private String repeatedPassword;
   private String email;
   private String firstName;
   private String lastName;
@@ -95,6 +94,14 @@ public class Account implements Serializable {
     cause(event);
   }
 
+  public String getRepeatedPassword() {
+    return repeatedPassword;
+  }
+
+  public void setRepeatedPassword(String repeatedPassword) {
+    this.repeatedPassword = repeatedPassword;
+  }
+
   public String getEmail() {
     return email;
   }
@@ -108,7 +115,7 @@ public class Account implements Serializable {
     return firstName;
   }
 
-  @Validate(required = true, on = { "newAccount", "editAccount" })
+  // @Validate(required = true, on = { "newAccount", "editAccount" })
   public void setFirstName(String firstName) {
     AttributeUpdatedEvent event = generateAttributeUpdatedEvent("firstName", firstName);
     cause(event);
@@ -118,7 +125,7 @@ public class Account implements Serializable {
     return lastName;
   }
 
-  @Validate(required = true, on = { "newAccount", "editAccount" })
+  // @Validate(required = true, on = { "newAccount", "editAccount" })
   public void setLastName(String lastName) {
     AttributeUpdatedEvent event = generateAttributeUpdatedEvent("lastName", lastName);
     cause(event);
