@@ -60,7 +60,6 @@ public class EventStore {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    System.out.println(results);
     return results;
   }
 

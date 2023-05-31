@@ -15,17 +15,21 @@
  */
 package org.mybatis.jpetstore.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.jpetstore.core.EventStore;
 import org.mybatis.jpetstore.core.event.DomainEvent;
 import org.mybatis.jpetstore.domain.Account;
 
 public class EventSourcedAccountRepository {
-  EventStore eventStore;
+  private EventStore eventStore;
+  private Map<String, String> accountIdCache;
 
   public EventSourcedAccountRepository(EventStore eventStore) {
     this.eventStore = eventStore;
+    this.accountIdCache = new HashMap<>();
   }
 
   public String save(Account account) {
@@ -38,7 +42,27 @@ public class EventSourcedAccountRepository {
         ex.printStackTrace();
       }
     }
+    if (streamId != null) {
+      accountIdCache.put(account.getUsername(), account.getAccountId());
+    }
     return streamId;
+  }
+
+  public Account findByUsernameAndPassword(String username, String password) {
+    String accountId = accountIdCache.get(username);
+    if (accountId == null) {
+      return null;
+    }
+    String streamId = Account.class.getName() + "." + accountId;
+    List<DomainEvent> events = eventStore.getStream(streamId);
+    Account account = new Account(accountId);
+    for (DomainEvent event : events) {
+      account.mutate(event);
+    }
+    if (account.getPassword().equals(password)) {
+      return account;
+    }
+    return null;
   }
 
   public Account findBy(String accountId) {

@@ -165,10 +165,26 @@ public class AccountActionBean extends AbstractActionBean {
    *
    * @return the resolution
    */
+  // public Resolution signon() {
+  // account = accountService.getAccount(getUsername(), getPassword());
+  //
+  // if (account == null) {
+  // String value = "Invalid username or password. Signon failed.";
+  // setMessage(value);
+  // clear();
+  // return new ForwardResolution(SIGNON);
+  // } else {
+  // account.setPassword(null);
+  // myList = catalogService.getProductListByCategory(account.getFavouriteCategoryId());
+  // authenticated = true;
+  // HttpSession s = context.getRequest().getSession();
+  // // this bean is already registered as /actions/Account.action
+  // s.setAttribute("accountBean", this);
+  // return new RedirectResolution(CatalogActionBean.class);
+  // }
+  // }
   public Resolution signon() {
-
-    account = accountService.getAccount(getUsername(), getPassword());
-
+    account = repository.findByUsernameAndPassword(account.getUsername(), account.getPassword());
     if (account == null) {
       String value = "Invalid username or password.  Signon failed.";
       setMessage(value);
