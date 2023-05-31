@@ -81,8 +81,10 @@ public class Account implements Serializable {
   }
 
   public void setUsername(String username) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("username", username);
-    cause(event);
+    if (this.username == null || !this.username.equals(username)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("username", username);
+      cause(event);
+    }
   }
 
   public String getPassword() {
@@ -90,8 +92,10 @@ public class Account implements Serializable {
   }
 
   public void setPassword(String password) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("password", password);
-    cause(event);
+    if (this.password == null || !this.password.equals(password)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("password", password);
+      cause(event);
+    }
   }
 
   public String getRepeatedPassword() {
@@ -107,8 +111,10 @@ public class Account implements Serializable {
   }
 
   public void setEmail(String email) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("email", email);
-    cause(event);
+    if (this.email == null || !this.email.equals(email)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("email", email);
+      cause(event);
+    }
   }
 
   public String getFirstName() {
@@ -117,8 +123,10 @@ public class Account implements Serializable {
 
   // @Validate(required = true, on = { "newAccount", "editAccount" })
   public void setFirstName(String firstName) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("firstName", firstName);
-    cause(event);
+    if (this.firstName == null || !this.firstName.equals(firstName)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("firstName", firstName);
+      cause(event);
+    }
   }
 
   public String getLastName() {
@@ -127,8 +135,10 @@ public class Account implements Serializable {
 
   // @Validate(required = true, on = { "newAccount", "editAccount" })
   public void setLastName(String lastName) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("lastName", lastName);
-    cause(event);
+    if (this.lastName == null || !this.lastName.equals(lastName)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("lastName", lastName);
+      cause(event);
+    }
   }
 
   public String getStatus() {
@@ -136,8 +146,10 @@ public class Account implements Serializable {
   }
 
   public void setStatus(String status) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("status", status);
-    cause(event);
+    if (this.status == null || !this.status.equals(status)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("status", status);
+      cause(event);
+    }
   }
 
   public String getAddress1() {
@@ -145,8 +157,10 @@ public class Account implements Serializable {
   }
 
   public void setAddress1(String address1) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("address1", address1);
-    cause(event);
+    if (this.address1 == null || !this.address1.equals(address1)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("address1", address1);
+      cause(event);
+    }
   }
 
   public String getAddress2() {
@@ -154,8 +168,10 @@ public class Account implements Serializable {
   }
 
   public void setAddress2(String address2) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("address2", address2);
-    cause(event);
+    if (this.address2 == null || !this.address2.equals(address2)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("address2", address2);
+      cause(event);
+    }
   }
 
   public String getCity() {
@@ -163,8 +179,10 @@ public class Account implements Serializable {
   }
 
   public void setCity(String city) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("city", city);
-    cause(event);
+    if (this.city == null || !this.city.equals(city)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("city", city);
+      cause(event);
+    }
   }
 
   public String getState() {
@@ -172,8 +190,10 @@ public class Account implements Serializable {
   }
 
   public void setState(String state) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("state", state);
-    cause(event);
+    if (this.state == null || !this.state.equals(state)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("state", state);
+      cause(event);
+    }
   }
 
   public String getZip() {
@@ -181,8 +201,10 @@ public class Account implements Serializable {
   }
 
   public void setZip(String zip) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("zip", zip);
-    cause(event);
+    if (this.zip == null || !this.zip.equals(zip)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("zip", zip);
+      cause(event);
+    }
   }
 
   public String getCountry() {
@@ -190,8 +212,10 @@ public class Account implements Serializable {
   }
 
   public void setCountry(String country) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("country", country);
-    cause(event);
+    if (this.country == null || !this.country.equals(country)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("country", country);
+      cause(event);
+    }
   }
 
   public String getPhone() {
@@ -199,8 +223,10 @@ public class Account implements Serializable {
   }
 
   public void setPhone(String phone) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("phone", phone);
-    cause(event);
+    if (this.phone == null || !this.phone.equals(phone)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("phone", phone);
+      cause(event);
+    }
   }
 
   public String getFavouriteCategoryId() {
@@ -208,8 +234,10 @@ public class Account implements Serializable {
   }
 
   public void setFavouriteCategoryId(String favouriteCategoryId) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("favouriteCategoryId", favouriteCategoryId);
-    cause(event);
+    if (this.favouriteCategoryId == null || !this.favouriteCategoryId.equals(favouriteCategoryId)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("favouriteCategoryId", favouriteCategoryId);
+      cause(event);
+    }
   }
 
   public String getLanguagePreference() {
@@ -217,8 +245,10 @@ public class Account implements Serializable {
   }
 
   public void setLanguagePreference(String languagePreference) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("languagePreference", languagePreference);
-    cause(event);
+    if (this.languagePreference == null || !this.languagePreference.equals(languagePreference)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("languagePreference", languagePreference);
+      cause(event);
+    }
   }
 
   public boolean isListOption() {
@@ -226,8 +256,10 @@ public class Account implements Serializable {
   }
 
   public void setListOption(boolean listOption) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("listOption", listOption);
-    cause(event);
+    if (this.listOption != listOption) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("listOption", listOption);
+      cause(event);
+    }
   }
 
   public boolean isBannerOption() {
@@ -235,8 +267,10 @@ public class Account implements Serializable {
   }
 
   public void setBannerOption(boolean bannerOption) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("bannerOption", bannerOption);
-    cause(event);
+    if (this.bannerOption != bannerOption) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("bannerOption", bannerOption);
+      cause(event);
+    }
   }
 
   public String getBannerName() {
@@ -244,8 +278,10 @@ public class Account implements Serializable {
   }
 
   public void setBannerName(String bannerName) {
-    AttributeUpdatedEvent event = generateAttributeUpdatedEvent("bannerName", bannerName);
-    cause(event);
+    if (this.bannerName == null || !this.bannerName.equals(bannerName)) {
+      AttributeUpdatedEvent event = generateAttributeUpdatedEvent("bannerName", bannerName);
+      cause(event);
+    }
   }
 
   private void cause(DomainEvent event) {

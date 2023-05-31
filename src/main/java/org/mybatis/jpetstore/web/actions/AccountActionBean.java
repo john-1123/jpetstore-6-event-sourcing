@@ -158,7 +158,21 @@ public class AccountActionBean extends AbstractActionBean {
   // }
   public Resolution editAccount() {
     Account queryAccount = repository.findBy(account.getAccountId());
+    queryAccount.setPassword(account.getPassword());
     queryAccount.setFirstName(account.getFirstName());
+    queryAccount.setLastName(account.getLastName());
+    queryAccount.setEmail(account.getEmail());
+    queryAccount.setPhone(account.getPhone());
+    queryAccount.setAddress1(account.getAddress1());
+    queryAccount.setAddress2(account.getAddress2());
+    queryAccount.setCity(account.getCity());
+    queryAccount.setState(account.getState());
+    queryAccount.setZip(account.getZip());
+    queryAccount.setCountry(account.getCountry());
+    queryAccount.setLanguagePreference(account.getLanguagePreference());
+    queryAccount.setFavouriteCategoryId(account.getFavouriteCategoryId());
+    queryAccount.setListOption(account.isListOption());
+    queryAccount.setBannerOption(account.isBannerOption());
     repository.save(queryAccount);
     return new RedirectResolution(CatalogActionBean.class);
   }
