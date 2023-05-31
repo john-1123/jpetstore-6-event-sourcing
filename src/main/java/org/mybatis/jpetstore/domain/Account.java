@@ -1,5 +1,5 @@
 /*
- *    Copyright 2010-2022 the original author or authors.
+ *    Copyright 2010-2023 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.sourceforge.stripes.validation.Validate;
+
 import org.mybatis.jpetstore.core.event.AttributeUpdatedEvent;
 import org.mybatis.jpetstore.core.event.DomainEvent;
 import org.mybatis.jpetstore.core.event.EntityCreatedEvent;
@@ -60,6 +61,7 @@ public class Account implements Serializable {
   public Account() {
     this.eventCache = new ArrayList<>();
     this.accountId = UUID.randomUUID().toString();
+    cause(new EntityCreatedEvent(getStreamId(), Account.class.getName(), new Date().getTime()));
   }
 
   public Account(String accountId) {
@@ -246,10 +248,11 @@ public class Account implements Serializable {
 
   public void mutate(DomainEvent event) {
     if (event instanceof EntityCreatedEvent) {
-
-    } else if(event instanceof AttributeUpdatedEvent) {
+      // pass
+    } else if (event instanceof AttributeUpdatedEvent) {
       applyUpdatedEvent((AttributeUpdatedEvent) event);
-    } else throw new IllegalArgumentException();
+    } else
+      throw new IllegalArgumentException();
   }
 
   private void applyUpdatedEvent(AttributeUpdatedEvent event) {
@@ -312,8 +315,8 @@ public class Account implements Serializable {
   }
 
   private AttributeUpdatedEvent generateAttributeUpdatedEvent(String key, Object value) {
-    AttributeUpdatedEvent event =
-            new AttributeUpdatedEvent(getStreamId(), Account.class.getName(), new Date().getTime());
+    AttributeUpdatedEvent event = new AttributeUpdatedEvent(getStreamId(), Account.class.getName(),
+        new Date().getTime());
     event.setName(key);
     event.setValue(value);
     return event;
@@ -329,12 +332,11 @@ public class Account implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("Account{ accountId='%s', username='%s', password='%s, email='%s, firstName='%s, lastName='%s'," +
-                    " status='%s', address1='%s', address2='%s', city='%s', state='%s', zip='%s', country='%s', phone='%s'," +
-                    " favoriteCategoryId='%s', languagePreference='%s', listOption='%s', bannerOption='%s', bannerName='%s'}",
-            accountId, username, password, email, firstName, lastName,
-            status, address1, address2, city, state, zip, country, phone,
-            favouriteCategoryId, languagePreference, listOption, bannerOption, bannerName
-    );
+    return String.format(
+        "Account{ accountId='%s', username='%s', password='%s, email='%s, firstName='%s, lastName='%s',"
+            + " status='%s', address1='%s', address2='%s', city='%s', state='%s', zip='%s', country='%s', phone='%s',"
+            + " favoriteCategoryId='%s', languagePreference='%s', listOption='%s', bannerOption='%s', bannerName='%s'}",
+        accountId, username, password, email, firstName, lastName, status, address1, address2, city, state, zip,
+        country, phone, favouriteCategoryId, languagePreference, listOption, bannerOption, bannerName);
   }
 }

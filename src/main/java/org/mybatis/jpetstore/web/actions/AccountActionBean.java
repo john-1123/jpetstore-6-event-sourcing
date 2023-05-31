@@ -1,5 +1,5 @@
 /*
- *    Copyright 2010-2022 the original author or authors.
+ *    Copyright 2010-2023 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,16 +21,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.ForwardResolution;
-import net.sourceforge.stripes.action.RedirectResolution;
-import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.SessionScope;
+import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.Validate;
 
+import org.mybatis.jpetstore.core.EventStore;
 import org.mybatis.jpetstore.domain.Account;
 import org.mybatis.jpetstore.domain.Product;
+import org.mybatis.jpetstore.repository.EventSourcedAccountRepository;
 import org.mybatis.jpetstore.service.AccountService;
 import org.mybatis.jpetstore.service.CatalogService;
 
@@ -55,6 +53,10 @@ public class AccountActionBean extends AbstractActionBean {
   private transient AccountService accountService;
   @SpringBean
   private transient CatalogService catalogService;
+
+  private final static EventStore eventStore = new EventStore(
+      "esdb://127.0.0.1:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000");
+  private final static EventSourcedAccountRepository repository = new EventSourcedAccountRepository(eventStore);
 
   private Account account = new Account();
   private List<Product> myList;
@@ -112,9 +114,16 @@ public class AccountActionBean extends AbstractActionBean {
    *
    * @return the resolution
    */
+  // public Resolution newAccount() {
+  // accountService.insertAccount(account);
+  // account = accountService.getAccount(account.getUsername());
+  // myList = catalogService.getProductListByCategory(account.getFavouriteCategoryId());
+  // authenticated = true;
+  // return new RedirectResolution(CatalogActionBean.class);
+  // }
   public Resolution newAccount() {
-    accountService.insertAccount(account);
-    account = accountService.getAccount(account.getUsername());
+    this.repository.save(account);
+    account = this.repository.findBy(account.getAccountId());
     myList = catalogService.getProductListByCategory(account.getFavouriteCategoryId());
     authenticated = true;
     return new RedirectResolution(CatalogActionBean.class);
