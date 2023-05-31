@@ -143,10 +143,16 @@ public class AccountActionBean extends AbstractActionBean {
    *
    * @return the resolution
    */
+  // public Resolution editAccount() {
+  // accountService.updateAccount(account);
+  // account = accountService.getAccount(account.getUsername());
+  // myList = catalogService.getProductListByCategory(account.getFavouriteCategoryId());
+  // return new RedirectResolution(CatalogActionBean.class);
+  // }
   public Resolution editAccount() {
-    accountService.updateAccount(account);
-    account = accountService.getAccount(account.getUsername());
-    myList = catalogService.getProductListByCategory(account.getFavouriteCategoryId());
+    Account queryAccount = repository.findBy(account.getAccountId());
+    queryAccount.setFirstName(account.getFirstName());
+    repository.save(queryAccount);
     return new RedirectResolution(CatalogActionBean.class);
   }
 
@@ -186,7 +192,7 @@ public class AccountActionBean extends AbstractActionBean {
   public Resolution signon() {
     account = repository.findByUsernameAndPassword(account.getUsername(), account.getPassword());
     if (account == null) {
-      String value = "Invalid username or password.  Signon failed.";
+      String value = "Invalid username or password. Signon failed.";
       setMessage(value);
       clear();
       return new ForwardResolution(SIGNON);
