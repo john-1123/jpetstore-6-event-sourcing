@@ -18,6 +18,7 @@ package org.mybatis.jpetstore.web.actions;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -194,7 +195,23 @@ public class AccountActionBean extends AbstractActionBean {
    */
   // public Resolution signon() {
   // account = accountService.getAccount(getUsername(), getPassword());
-  //
+  // if (account == null) {
+  // String value = "Invalid username or password. Signon failed.";
+  // setMessage(value);
+  // clear();
+  // return new ForwardResolution(SIGNON);
+  // } else {
+  // account.setPassword(null);
+  // myList = catalogService.getProductListByCategory(account.getFavouriteCategoryId());
+  // authenticated = true;
+  // HttpSession s = context.getRequest().getSession();
+  // // this bean is already registered as /actions/Account.action
+  // s.setAttribute("accountBean", this);
+  // return new RedirectResolution(CatalogActionBean.class);
+  // }
+  // }
+  // public Resolution signon() {
+  // account = repository.findByUsernameAndPassword(account.getUsername(), account.getPassword());
   // if (account == null) {
   // String value = "Invalid username or password. Signon failed.";
   // setMessage(value);
@@ -211,13 +228,12 @@ public class AccountActionBean extends AbstractActionBean {
   // }
   // }
   public Resolution signon() {
-    account = repository.findByUsernameAndPassword(account.getUsername(), account.getPassword());
-    if (account == null) {
-      String value = "Invalid username or password. Signon failed.";
-      setMessage(value);
-      clear();
-      return new ForwardResolution(SIGNON);
-    } else {
+    Optional<Account> queryAccount = repository.findAll().stream()
+        .filter(account1 -> account1.getUsername().equals(account.getUsername())
+            && account1.getPassword().equals(account.getPassword()))
+        .findFirst();
+    if (queryAccount.isPresent()) {
+      account = queryAccount.get();
       account.setPassword(null);
       myList = catalogService.getProductListByCategory(account.getFavouriteCategoryId());
       authenticated = true;
@@ -225,6 +241,11 @@ public class AccountActionBean extends AbstractActionBean {
       // this bean is already registered as /actions/Account.action
       s.setAttribute("accountBean", this);
       return new RedirectResolution(CatalogActionBean.class);
+    } else {
+      String value = "Invalid username or password. Signon failed.";
+      setMessage(value);
+      clear();
+      return new ForwardResolution(SIGNON);
     }
   }
 

@@ -15,9 +15,10 @@
  */
 package org.mybatis.jpetstore.repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+
+import java.util.*;
 
 import org.mybatis.jpetstore.core.EventStore;
 import org.mybatis.jpetstore.core.event.DomainEvent;
@@ -63,6 +64,24 @@ public class EventSourcedAccountRepository {
       return account;
     }
     return null;
+  }
+
+  public List<Account> findAll() {
+    List<Account> accountList = new ArrayList<>();
+    List<DomainEvent> events = eventStore.getAllStream();
+
+    Map<String, List<DomainEvent>> eventsGroupByStreamId = events.stream()
+        .filter(event -> event.getEntityType().equals(Account.class.getName()))
+        .collect(groupingBy(DomainEvent::getStreamId, toList()));
+    eventsGroupByStreamId.forEach((streamId, stream) -> {
+      String[] streamSplitByDot = streamId.split("\\.");
+      String accountId = streamSplitByDot[streamSplitByDot.length - 1];
+      Account account = new Account(accountId);
+      stream.forEach(account::mutate);
+      accountList.add(account);
+    });
+
+    return accountList;
   }
 
   public Account findBy(String accountId) {
